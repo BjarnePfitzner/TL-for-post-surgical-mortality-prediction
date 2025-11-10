@@ -1,0 +1,16 @@
+defaults:
+  - imputer: knn_imputer
+
+name: transfer_learning
+drop_features: True
+drop_rows_missing_col_fraction: 0
+feature_set: [pre]
+test_fraction: 0.1
+val_fraction: 0.1
+external_test_set: False
+drop_cols_missing_row_fraction: 0.5
+correlation_threshold: 0.95
+prediction_target: 30_day_mortality
+tl_organ_system: Esophagus
+normalise: minmax
+fs_operations: ['single_unique']

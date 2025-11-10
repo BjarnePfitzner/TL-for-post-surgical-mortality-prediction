@@ -1,0 +1,30 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: transfer_learning
+  - override /dataset: tl
+  - override /dp: disabled
+  - override /early_stopping: enabled
+
+experiment_name: 90d_tl
+base_model_path: outputs_nested_cv_colorectal/90d_base_training/unknown_sweep/Liver/tl_90d_base_0/trained_model
+output_folder: outputs_nested_cv_liver
+save_model: False
+
+dataset:
+  prediction_target: 90_day_mortality
+  feature_set: [pre]
+  tl_organ_system: Liver
+
+training:
+  batch_size: 8
+  client_optimizer:
+    _target_: tensorflow.keras.optimizers.SGD
+    learning_rate: 0.005
+  tl_type: full_fine_tune
+
+model:
+  dropout: 0.5
+  dropout_input: 0.2
+  neurons: [128]

@@ -1,0 +1,63 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: base_training
+  - override /dataset: tl
+  - override /dp: disabled
+  - override /early_stopping: enabled
+
+experiment_name: CDV_base_training
+output_folder: outputs_nested_cv_stomach
+save_model: False
+
+dataset:
+  prediction_target: clavien_dindo_v
+  feature_set: [pre]
+  tl_organ_system: Gastric
+
+training:
+  batch_size: 128
+  client_optimizer:
+    _target_: tensorflow.keras.optimizers.SGD
+    learning_rate: 0.05
+
+model:
+  dropout: 0.0
+  dropout_input: 0.5
+  neurons: [128]
+
+hydra:
+  sweeper:
+    params:
+      training.batch_size:
+        - 16
+        - 32
+        - 64
+        - 128
+      training.client_optimizer.learning_rate:
+        - 0.001
+        - 0.005
+        - 0.01
+        - 0.05
+        - 0.1
+      model.neurons:
+        - [ 32 ]
+        - [ 64 ]
+        - [ 128 ]
+        - [ 32, 32 ]
+        - [ 64, 32 ]
+        - [ 64, 64 ]
+        - [ 128, 64 ]
+        - [ 128, 64, 32 ]
+      model.dropout:
+        - 0.0
+        - 0.2
+        - 0.5
+      model.dropout_input:
+        - 0.0
+        - 0.2
+        - 0.5
+      training.client_optimizer._target_:
+        - tensorflow.keras.optimizers.SGD
+        - tensorflow.keras.optimizers.Adam

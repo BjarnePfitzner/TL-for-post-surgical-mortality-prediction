@@ -1,0 +1,28 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: transfer_learning_baseline
+  - override /dataset: tl
+  - override /dp: disabled
+  - override /early_stopping: enabled
+
+experiment_name: 90d_tl_baseline
+output_folder: outputs_nested_cv_esophagus
+save_model: False
+
+dataset:
+  prediction_target: 90_day_mortality
+  feature_set: [pre]
+  tl_organ_system: Esophagus
+
+training:
+  batch_size: 64
+  client_optimizer:
+    _target_: tensorflow.keras.optimizers.SGD
+    learning_rate: 0.05
+
+model:
+  dropout: 0.5
+  dropout_input: 0.2
+  neurons: [128, 64]

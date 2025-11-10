@@ -1,0 +1,63 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: transfer_learning
+  - override /dataset: tl
+  - override /dp: disabled
+  - override /early_stopping: enabled
+
+experiment_name: 90d_tl
+#base_model_path: outputs_nested_cv_liver/90d_base_training/unknown_sweep/tl_90d_base_2/trained_model
+#base_model_path: outputs_nested_cv_eso/90d_base_training/unknown_sweep/tl_90d_base_alldata_0/trained_model
+#base_model_path: outputs_nested_cv_colorectal/90d_base_training/unknown_sweep/Colorectal_tl_90d_base_2/trained_model
+#base_model_path: outputs_nested_cv_colorectal/90d_base_training/unknown_sweep/Pancreas_tl_90d_base_2/trained_model
+base_model_path: outputs_nested_cv_colorectal/90d_base_training/unknown_sweep/Stomach_tl_90d_base_1/trained_model
+save_model: False
+
+dataset:
+  prediction_target: 90_day_mortality
+  feature_set: [pre]
+  tl_organ_system: Gastric
+
+training:
+  batch_size: 8
+  client_optimizer:
+    _target_: tensorflow.keras.optimizers.Adam
+    learning_rate: 0.001
+  tl_type: full_fine_tune
+
+model:
+  dropout: 0.2
+  dropout_input: 0.5
+  #neurons: [64]
+  neurons: [128]
+
+hydra:
+  sweeper:
+    params:
+      training.batch_size:
+        - 8
+        - 16
+        - 32
+        - 64
+        - 128
+      training.client_optimizer.learning_rate:
+        - 0.001
+        - 0.005
+        - 0.01
+        - 0.05
+        - 0.1
+      training.client_optimizer._target_:
+        - tensorflow.keras.optimizers.SGD
+        - tensorflow.keras.optimizers.Adam
+      training.tl_type:
+        - full_fine_tune
+        - out_layer_fine_tune
+        - new_out_layer
+      zeed:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4

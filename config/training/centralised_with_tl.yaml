@@ -1,0 +1,12 @@
+type: centralised
+total_rounds: 500
+batch_size: 16
+tl_batch_size: 16
+use_sample_weights: True
+client_optimizer:
+  _target_: tensorflow.keras.optimizers.SGD
+  learning_rate: 0.1
+tl_optimizer:
+  _target_: tensorflow.keras.optimizers.SGD
+  learning_rate: 0.1
+transfer_learning: True

@@ -1,0 +1,30 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: transfer_learning
+  - override /dataset: tl
+  - override /dp: disabled
+  - override /early_stopping: enabled
+
+experiment_name: CDV_tl
+base_model_path: outputs_nested_cv_colorectal/CDV_base_training/unknown_sweep/Esophagus/tl_cdv_base_4/trained_model
+save_model: False
+output_folder: outputs_nested_cv_esophagus
+
+dataset:
+  prediction_target: clavien_dindo_v
+  feature_set: [pre]
+  tl_organ_system: Esophagus
+
+training:
+  batch_size: 16
+  client_optimizer:
+    _target_: tensorflow.keras.optimizers.SGD
+    learning_rate: 0.1
+  tl_type: new_out_layer
+
+model:
+  dropout: 0.2
+  dropout_input: 0.2
+  neurons: [128, 64]

@@ -1,0 +1,10 @@
+type: transfer_learning_baseline
+total_rounds: 200
+batch_size: 16
+use_sample_weights: True
+client_optimizer:
+  _target_: tensorflow.keras.optimizers.SGD
+  learning_rate: 0.1
+outer_k_folds: 10
+inner_k_folds: 5
+val_fraction: 0.1

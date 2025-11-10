@@ -1,0 +1,56 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: centralised_with_tl
+  - override /dataset: cass_retro_for_eso
+  - override /dp: disabled
+  - override /early_stopping: enabled
+
+experiment_name: 30d_no_tl
+
+dataset:
+  prediction_target: target_30_day_mortality
+  feature_set: [pre]
+
+training:
+  client_optimizer:
+    learning_rate: 0.01
+    _target_: tensorflow.keras.optimizers.Adam
+  batch_size: 8
+  transfer_learning: True
+
+hydra:
+  sweeper:
+    params:
+      training.batch_size:
+        - 16
+        - 32
+        - 64
+        - 128
+      training.tl_batch_size:
+        - 4
+        - 8
+        - 16
+        - 32
+      training.client_optimizer.learning_rate:
+        - 0.001
+        - 0.01
+        - 0.1
+      training.tl_optimizer.learning_rate:
+        - 0.0001
+        - 0.001
+        - 0.01
+        - 0.1
+      training.client_optimizer._target_:
+        - tensorflow.keras.optimizers.SGD
+        - tensorflow.keras.optimizers.Adam
+      training.tl_optimizer._target_:
+        - tensorflow.keras.optimizers.SGD
+        - tensorflow.keras.optimizers.Adam
+      zeed:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4

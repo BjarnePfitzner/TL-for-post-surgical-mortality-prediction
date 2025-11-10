@@ -1,0 +1,29 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: wandb
+  - override /training: single_base_training
+  - override /dataset: tl
+  - override /dp: disabled
+  - override /early_stopping: disabled
+
+experiment_name: 90d_base_training_single
+
+dataset:
+  prediction_target: 90_day_mortality
+  feature_set: [pre]
+  tl_organ_system: Colorectal
+
+training:
+  batch_size: 128
+  client_optimizer:
+    _target_: tensorflow.keras.optimizers.SGD
+    learning_rate: 0.1
+
+evaluation:
+  shap: True
+
+model:
+  dropout: 0.5
+  dropout_input: 0.0
+  neurons: [64]
